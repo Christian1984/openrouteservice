@@ -1,5 +1,6 @@
 package org.heigit.ors.routing.graphhopper.extensions;
 
+import ch.chris_hoffmann.ors.routing.graphhopper.extensions.weighting.CurvinessWeighting;
 import com.graphhopper.config.Profile;
 import com.graphhopper.routing.WeightingFactory;
 import com.graphhopper.routing.util.ConditionalSpeedCalculator;
@@ -30,6 +31,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static com.graphhopper.routing.weighting.TurnCostProvider.NO_TURN_COST_PROVIDER;
 import static com.graphhopper.routing.weighting.Weighting.INFINITE_U_TURN_COSTS;
@@ -80,6 +82,7 @@ public class ORSWeightingFactory implements WeightingFactory {
 
         // ORS-GH MOD START - use weighting method determined by ORS
         String weightingStr = hints.getString("weighting_method", "").toLowerCase();
+        Logger.getAnonymousLogger().info("weightingStr = [" + weightingStr + "]");
         if (Helper.isEmpty(weightingStr))
             weightingStr = toLowerCase(profile.getWeighting());
         // ORS-GH MOD END
@@ -107,6 +110,10 @@ public class ORSWeightingFactory implements WeightingFactory {
 
         if ("recommended".equalsIgnoreCase(weightingStr) && encoder.supports(PriorityWeighting.class)) {
             weighting = new ORSPriorityWeighting(encoder, turnCostProvider, weighting);
+        }
+
+        if ("curviness".equalsIgnoreCase(weightingStr)) {
+            weighting = new CurvinessWeighting(ghStorage, encoder, hints);
         }
 
         weighting = applySoftWeightings(hints, encoder, weighting);
