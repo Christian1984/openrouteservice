@@ -19,6 +19,7 @@ public class WeightingMethod {
     public static final int SHORTEST = 2;
     public static final int RECOMMENDED = 3;
     public static final int CUSTOM = 4;
+    public static final int CURVINESS = 5;
 
     private WeightingMethod() {
     }
@@ -30,6 +31,8 @@ public class WeightingMethod {
             return WeightingMethod.SHORTEST;
         } else if ("recommended".equalsIgnoreCase(method)) {
             return WeightingMethod.RECOMMENDED;
+        } else if ("curviness".equalsIgnoreCase(method)) {
+            return WeightingMethod.CURVINESS;
         } else if ("custom".equalsIgnoreCase(method)) {
             return WeightingMethod.CUSTOM;
         }
@@ -41,6 +44,7 @@ public class WeightingMethod {
             case FASTEST -> "fastest";
             case SHORTEST -> "shortest";
             case RECOMMENDED -> "recommended";
+            case CURVINESS -> "curviness";
             case CUSTOM -> "custom";
             default -> "";
         };
