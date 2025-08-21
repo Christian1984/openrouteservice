@@ -123,6 +123,7 @@ public class RoutingProfile {
         }
 
         if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("HERE");
             LOGGER.info("[%d] Profile: '%s', encoder: '%s', location: '%s'.".formatted(profileId, profileProperties.getProfileName(), profileProperties.getEncoderName().toString(), gh.getOrsGraphManager().getActiveGraphDirAbsPath()));
             GraphHopperStorage ghStorage = gh.getGraphHopperStorage();
             LOGGER.info("[%d] Edges: %s - Nodes: %s.".formatted(profileId, ghStorage.getEdges(), ghStorage.getNodes()));

@@ -25,6 +25,7 @@ public class ORSDefaultFlagEncoderFactory extends DefaultFlagEncoderFactory impl
 
     @Override
     public FlagEncoder createFlagEncoder(String name, PMap configuration) {
+        System.out.println("here");
         switch (name) {
             case FlagEncoderNames.CAR_ORS:
                 return new org.heigit.ors.routing.graphhopper.extensions.flagencoders.CarFlagEncoder(configuration);

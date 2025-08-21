@@ -52,6 +52,7 @@ import static org.heigit.ors.util.ProfileTools.VAL_RECOMMENDED;
 public class ORSWeightingFactory implements WeightingFactory {
     protected final GraphHopperStorage ghStorage;
     protected final EncodingManager encodingManager;
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ORSWeightingFactory.class.getName());
 
     public ORSWeightingFactory(GraphHopperStorage ghStorage, EncodingManager encodingManager) {
         this.ghStorage = ghStorage;
@@ -82,12 +83,12 @@ public class ORSWeightingFactory implements WeightingFactory {
 
         // ORS-GH MOD START - use weighting method determined by ORS
         String weightingStr = hints.getString("weighting_method", "").toLowerCase();
-        Logger.getAnonymousLogger().info("weightingStr = [" + weightingStr + "]");
         if (Helper.isEmpty(weightingStr))
             weightingStr = toLowerCase(profile.getWeighting());
         // ORS-GH MOD END
         if (weightingStr.isEmpty())
             throw new IllegalArgumentException("You need to specify a weighting");
+        LOGGER.info("weightingStr = [" + weightingStr + "]");
 
         Weighting weighting;
         if (VAL_CUSTOM.equalsIgnoreCase(weightingStr) || profile instanceof CustomProfile) {
@@ -113,7 +114,10 @@ public class ORSWeightingFactory implements WeightingFactory {
         }
 
         if ("curviness".equalsIgnoreCase(weightingStr)) {
+            LOGGER.info("hit :117");
+            //weighting = new ORSPriorityWeighting(encoder, turnCostProvider, weighting);
             weighting = new CurvinessWeighting(ghStorage, encoder, hints);
+            LOGGER.info("hit :119");
         }
 
         weighting = applySoftWeightings(hints, encoder, weighting);

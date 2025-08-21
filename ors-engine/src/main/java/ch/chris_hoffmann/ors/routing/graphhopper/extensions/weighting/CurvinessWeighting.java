@@ -9,6 +9,12 @@ import com.graphhopper.util.PMap;
 import com.graphhopper.util.EdgeIteratorState;
 import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.routing.weighting.Weighting;
+import org.heigit.ors.routing.graphhopper.extensions.ORSWeightingFactory;
+import org.heigit.ors.routing.graphhopper.extensions.flagencoders.FlagEncoderKeys;
+
+import java.util.logging.Logger;
+
+import static com.graphhopper.routing.util.EncodingManager.getKey;
 
 public class CurvinessWeighting extends AbstractWeighting {
     private final DecimalEncodedValue speedEnc;           // vehicle average speed (km/h)
@@ -16,10 +22,13 @@ public class CurvinessWeighting extends AbstractWeighting {
     private final EnumEncodedValue<RoadClass> roadClass;  // motorway/primary/... classification
     private final DecimalEncodedValue curvinessEnc;       // your custom per-edge metric
 
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(CurvinessWeighting.class.getName());
+
     // tunables
     private final double alpha;   // strength for curviness preference
     private final double beta;    // strength for speed-limit band preference
     private final double highwayPenalty; // multiplicative penalty for motorways
+
 
     public CurvinessWeighting(GraphHopperStorage gh, FlagEncoder encoder, PMap hints) {
         super(encoder);

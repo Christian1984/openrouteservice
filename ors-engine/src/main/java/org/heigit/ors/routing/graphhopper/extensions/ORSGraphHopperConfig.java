@@ -87,6 +87,7 @@ public class ORSGraphHopperConfig extends GraphHopperConfig {
         //       bike profiles. We don't use this feature now but it might be
         //       desireable in the future. However, this behavior is standard
         //       in original GH through an already existing mechanism.
+        LOGGER.info("Profiles length: " + profilesTypes.length);
         if (profilesTypes.length != 1)
             throw new IllegalStateException("Expected single profile in config");
 
